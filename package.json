@@ -1,0 +1,36 @@
+{
+  "name": "express-4.x-magic-link-example",
+  "version": "0.0.0",
+  "description": "Express 4.x app using Passport for sign in with email.",
+  "keywords": [
+    "example",
+    "express",
+    "passport"
+  ],
+  "author": "Jared Hanson",
+  "license": "Unlicense",
+  "homepage": "https://github.com/passport/express-4.x-magic-link-example",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/passport/express-4.x-magic-link-example.git"
+  },
+  "bugs": {
+    "url": "https://github.com/passport/express-4.x-magic-link-example/issues"
+  },
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.3.5",
+    "dotenv": "^6.2.0",
+    "ejs": "^2.3.3",
+    "express": "^4.13.1",
+    "express-session": "^1.11.3",
+    "morgan": "^1.6.1",
+    "passport": "^0.4.0",
+    "passport-magic-link": "^2.1.0",
+    "sqlite3": "^5.0.2"
+  }
+}
