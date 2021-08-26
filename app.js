@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var express = require('express');
 var passport = require('passport');
 var path = require('path');
@@ -11,6 +13,7 @@ var myaccountRouter = require('./routes/myaccount');
 var app = express();
 
 require('./boot/db')();
+require('./boot/mail')();
 require('./boot/auth')();
 
 // view engine setup

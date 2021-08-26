@@ -1,5 +1,6 @@
 var passport = require('passport');
 var Strategy = require('passport-magic-link').Strategy;
+var sendgrid = require('@sendgrid/mail');
 
 
 module.exports = function() {
@@ -14,14 +15,15 @@ module.exports = function() {
      console.log(user);
      console.log(token);
      
-     /*
+     var msg = {
+       to: user.email, // Change to your recipient
+       from: process.env['SENDGRID_FROM'], // Change to your verified sender
+       subject: 'Sending with SendGrid is Fun',
+       text: 'and easy to do anywhere, even with Node.js',
+       html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+     }
      
-      return MailService.sendMail({
-       to: user.email,
-       token
-      })
-     */
-     
+     return sendgrid.send(msg);
    }, (user) => {
      console.log('FIND USER');
      
