@@ -18,9 +18,6 @@ var authRouter = require('./routes/auth');
 
 var app = express();
 
-require('./boot/mail')();
-require('./boot/auth')();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
