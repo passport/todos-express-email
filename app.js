@@ -20,7 +20,6 @@ var app = express();
 
 require('./boot/db')();
 require('./boot/mail')();
-require('./boot/auth')();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
