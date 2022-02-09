@@ -31,6 +31,24 @@ $ npm start
 
 Navigate to [`http://localhost:3000`](http://localhost:3000).
 
+## Overview
+
+This example illustrates how to use Passport and the [`passport-magic-link`](https://github.com/vinialbano/passport-magic-link)
+strategy within an Express application to sign users in with email via SendGrid.
+
+This app implements the features of a typical [TodoMVC](https://todomvc.com/)
+app, and adds sign in functionality.  This app is a traditional web application,
+in which all application logic and data persistence is handled on the server.
+
+User interaction is performed via HTML pages and forms, which are rendered via
+[EJS](https://ejs.co/) templates and styled with vanilla CSS.  Data is stored in
+and queried from a [SQLite](https://www.sqlite.org/) database.
+
+After users sign in, a login session is established and maintained between the
+server and the browser with a cookie.  As authenticated users interact with the
+app, creating and editing todo items, the login state is restored by
+authenticating the session.
+
 ## License
 
 [The Unlicense](https://opensource.org/licenses/unlicense)
