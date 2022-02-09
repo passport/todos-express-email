@@ -13,12 +13,7 @@ passport.use(new MagicLinkStrategy({
   tokenField: 'token',
   verifyUserAfterToken: true
 }, function(user, token) {
-  console.log('SEND TOKEN');
-  console.log(user);
-  console.log(token);
-   
   var link = 'http://localhost:3000/login/email/verify?token=' + token;
-  
   
   var msg = {
     to: user.email, // Change to your recipient
@@ -26,31 +21,18 @@ passport.use(new MagicLinkStrategy({
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js.  Click here: ' + link,
     _html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  }
-   
+  };
   return sendgrid.send(msg);
 }, function(user) {
-  console.log('FIND USER');
-  console.log(user);
-  
   return new Promise(function(resolve, reject) {
     db.get('SELECT * FROM emails WHERE address = ?', [
       user.email
     ], function(err, row) {
-      console.log(err);
-      console.log(row);
-      
       if (err) { return reject(err); }
       if (!row) {
-        console.log('FIRST LOGIN!');
-        
         db.run('INSERT INTO users DEFAULT VALUES', function(err) {
           if (err) { return reject(err); }
           var id = this.lastID;
-          
-          console.log('CREATED RECORD');
-          console.log(id);
-          
           db.run('INSERT INTO emails (user_id, address) VALUES (?, ?)', [
             id,
             user.email
@@ -63,8 +45,6 @@ passport.use(new MagicLinkStrategy({
             return resolve(obj);
           });
         });
-        
-        
       } else {
         db.get('SELECT rowid AS id, * FROM users WHERE rowid = ?', [ row.user_id ], function(err, row) {
           if (err) { return reject(err); }
