@@ -40,7 +40,7 @@ passport.use(new MagicLinkStrategy({
             if (err) { return reject(err); }
             var obj = {
               id: id,
-              name: user.email
+              email: user.email
             };
             return resolve(obj);
           });
@@ -48,7 +48,8 @@ passport.use(new MagicLinkStrategy({
       } else {
         db.get('SELECT rowid AS id, * FROM users WHERE rowid = ?', [ row.user_id ], function(err, row) {
           if (err) { return reject(err); }
-          if (!row) { return reject(); }
+          if (!row) { return resolve(false); }
+          row.email = user.email;
           return resolve(row);
         });
       }
@@ -95,10 +96,11 @@ router.get('/login/email/check', function(req, res, next) {
 router.get('/login/email/verify', passport.authenticate('magiclink', {
   action : 'acceptToken',
   successReturnToOrRedirect: '/',
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureMessage: true
 }));
 
-router.get('/logout', function(req, res, next) {
+router.post('/logout', function(req, res, next) {
   req.logout();
   res.redirect('/');
 });
