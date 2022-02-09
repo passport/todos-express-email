@@ -8,29 +8,73 @@ var db = require('../db');
 sendgrid.setApiKey(process.env['SENDGRID_API_KEY']);
 
 passport.use(new MagicLinkStrategy({
-    secret: 'my-secret',
-    userFields: ['email'],
-    tokenField: 'token',
-    verifyUserAfterToken: true
- }, function(user, token) {
-   console.log('SEND TOKEN');
-   console.log(user);
-   console.log(token);
+  secret: 'keyboard cat',
+  userFields: [ 'email' ],
+  tokenField: 'token',
+  verifyUserAfterToken: true
+}, function(user, token) {
+  console.log('SEND TOKEN');
+  console.log(user);
+  console.log(token);
    
-   var msg = {
-     to: user.email, // Change to your recipient
-     from: process.env['SENDGRID_FROM'], // Change to your verified sender
-     subject: 'Sending with SendGrid is Fun',
-     text: 'and easy to do anywhere, even with Node.js',
-     html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-   }
+  var link = 'http://localhost:3000/login/email/verify?token=' + token;
+  
+  
+  var msg = {
+    to: user.email, // Change to your recipient
+    from: process.env['SENDGRID_FROM'], // Change to your verified sender
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js.  Click here: ' + link,
+    _html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  }
    
-   return sendgrid.send(msg);
- }, (user) => {
-   console.log('FIND USER');
-   
-   //return User.findOrCreate({email: user.email, name: user.name})
- }))
+  return sendgrid.send(msg);
+}, function(user) {
+  console.log('FIND USER');
+  console.log(user);
+  
+  return new Promise(function(resolve, reject) {
+    db.get('SELECT * FROM emails WHERE address = ?', [
+      user.email
+    ], function(err, row) {
+      console.log(err);
+      console.log(row);
+      
+      if (err) { return reject(err); }
+      if (!row) {
+        console.log('FIRST LOGIN!');
+        
+        db.run('INSERT INTO users DEFAULT VALUES', function(err) {
+          if (err) { return reject(err); }
+          var id = this.lastID;
+          
+          console.log('CREATED RECORD');
+          console.log(id);
+          
+          db.run('INSERT INTO emails (user_id, address) VALUES (?, ?)', [
+            id,
+            user.email
+          ], function(err) {
+            if (err) { return reject(err); }
+            var obj = {
+              id: id,
+              name: user.email
+            };
+            return resolve(obj);
+          });
+        });
+        
+        
+      } else {
+        db.get('SELECT rowid AS id, * FROM users WHERE rowid = ?', [ row.user_id ], function(err, row) {
+          if (err) { return reject(err); }
+          if (!row) { return reject(); }
+          return resolve(row);
+        });
+      }
+    });
+  });
+}));
 
 passport.serializeUser(function(user, cb) {
   cb(null, user);
@@ -58,22 +102,21 @@ function(req, res, next) {
   function(req, res) {
     console.log('REDIRECT TO VERIFY...');
     
-    res.redirect('/check-your-inbox')
+    res.redirect('/login/email/check')
   }, function(err, req, res, next) {
     console.log('ERROR');
     console.log(err);
   });
-  
-router.get('/login/email/verify',
-  passport.authenticate('magiclink', { action : 'acceptToken', failWithError: true }),
-  function(req, res) {
-    console.log('REDIRECT TO VERIFY...');
 
-    //res.redirect('/check-your-inbox')
-  }, function(err, req, res, next) {
-    console.log('ERROR');
-    console.log(err);
-  });
+router.get('/login/email/check', function(req, res, next) {
+  res.render('check');
+});
+
+router.get('/login/email/verify', passport.authenticate('magiclink', {
+  action : 'acceptToken',
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/login'
+}));
 
 router.get('/logout', function(req, res, next) {
   req.logout();

@@ -13,6 +13,11 @@ db.serialize(function() {
     name TEXT \
   )");
   
+  db.run("CREATE TABLE IF NOT EXISTS emails ( \
+    user_id INTEGER NOT NULL, \
+    address TEXT NOT NULL \
+  )");
+  
   db.run("CREATE TABLE IF NOT EXISTS todos ( \
     owner_id INTEGER NOT NULL, \
     title TEXT NOT NULL, \
