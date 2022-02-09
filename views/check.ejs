@@ -11,7 +11,7 @@
 	<body>
 		<section class="prompt">
 			<h3>todos</h3>
-			<h1>Sign in</h1>
+			<h1>Check your email</h1>
 			<% if (hasMessages) { %>
 			<section class="messages">
 				<% messages.forEach(function(message) { %>
@@ -19,7 +19,9 @@
 				<% }); %>
 			</section>
 			<% } %>
-			<p>Check your email</p>
+			<p class="instructions">We sent a magic link to your email address. Click the link in that email to sign in.</p>
+			<hr>
+			<p class="help">Didn't receive the email? <a href="/login">Get another link</a></p>
 		</section>
 		<footer class="info">
 			<p>Created by <a href="https://www.jaredhanson.me">Jared Hanson</a></p>
