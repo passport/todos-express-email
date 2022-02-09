@@ -18,8 +18,8 @@ passport.use(new MagicLinkStrategy({
   var msg = {
     to: user.email, // Change to your recipient
     from: process.env['SENDGRID_FROM'], // Change to your verified sender
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js.  Click here: ' + link,
+    subject: 'Sign in to Todos',
+    text: 'Hello! Click the link below to finish signing in to Todos.\r\n\r\n' + link,
     _html: '<strong>and easy to do anywhere, even with Node.js</strong>',
   };
   return sendgrid.send(msg);

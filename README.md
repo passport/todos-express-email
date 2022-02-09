@@ -33,7 +33,7 @@ Navigate to [`http://localhost:3000`](http://localhost:3000).
 
 ## Overview
 
-This example illustrates how to use Passport and the [`passport-magic-link`](https://github.com/vinialbano/passport-magic-link)
+This example illustrates how to use Passport and the [`passport-magic-link`](https://www.passportjs.org/packages/passport-magic-link/)
 strategy within an Express application to sign users in with email via SendGrid.
 
 This app implements the features of a typical [TodoMVC](https://todomvc.com/)
