@@ -15,8 +15,8 @@ passport.use(new MagicLinkStrategy({
 }, function(user, token) {
   var link = 'http://localhost:3000/login/email/verify?token=' + token;
   var msg = {
-    to: user.email, // Change to your recipient
-    from: process.env['SENDGRID_FROM'], // Change to your verified sender
+    to: user.email,
+    from: process.env['EMAIL'],
     subject: 'Sign in to Todos',
     text: 'Hello! Click the link below to finish signing in to Todos.\r\n\r\n' + link,
     html: '<h3>Hello!</h3><p>Click the link below to finish signing in to Todos.</p><p><a href="' + link + '">Sign in</a></p>',
