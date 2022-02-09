@@ -25,44 +25,40 @@ passport.use(new MagicLinkStrategy({
   return sendgrid.send(msg);
 }, function(user) {
   return new Promise(function(resolve, reject) {
-    db.get('SELECT * FROM emails WHERE address = ?', [
+    db.get('SELECT rowid AS id, * FROM users WHERE email = ?', [
       user.email
     ], function(err, row) {
       if (err) { return reject(err); }
       if (!row) {
-        db.run('INSERT INTO users DEFAULT VALUES', function(err) {
+        db.run('INSERT INTO users (email, email_verified) VALUES (?, ?)', [
+          user.email,
+          1
+        ], function(err) {
           if (err) { return reject(err); }
           var id = this.lastID;
-          db.run('INSERT INTO emails (user_id, address) VALUES (?, ?)', [
-            id,
-            user.email
-          ], function(err) {
-            if (err) { return reject(err); }
-            var obj = {
-              id: id,
-              email: user.email
-            };
-            return resolve(obj);
-          });
+          var obj = {
+            id: id,
+            email: user.email
+          };
+          return resolve(obj);
         });
       } else {
-        db.get('SELECT rowid AS id, * FROM users WHERE rowid = ?', [ row.user_id ], function(err, row) {
-          if (err) { return reject(err); }
-          if (!row) { return resolve(false); }
-          row.email = user.email;
-          return resolve(row);
-        });
+        return resolve(row);
       }
     });
   });
 }));
 
 passport.serializeUser(function(user, cb) {
-  cb(null, user);
+  process.nextTick(function() {
+    cb(null, { id: user.id, email: user.email });
+  });
 });
 
-passport.deserializeUser(function(obj, cb) {
-  cb(null, obj);
+passport.deserializeUser(function(user, cb) {
+  process.nextTick(function() {
+    return cb(null, user);
+  });
 });
 
 

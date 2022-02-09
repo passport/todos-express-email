@@ -10,12 +10,9 @@ db.serialize(function() {
     username TEXT UNIQUE, \
     hashed_password BLOB, \
     salt BLOB, \
-    name TEXT \
-  )");
-  
-  db.run("CREATE TABLE IF NOT EXISTS emails ( \
-    user_id INTEGER NOT NULL, \
-    address TEXT NOT NULL \
+    name TEXT, \
+    email TEXT UNIQUE, \
+    email_verified INTEGER \
   )");
   
   db.run("CREATE TABLE IF NOT EXISTS todos ( \
