@@ -68,29 +68,19 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/login/email',
-function(req, res, next) {
-  console.log('ABOUT TO AUTH');
-  console.log(req.body)
-  
-  next();
-},
-  passport.authenticate('magiclink', { action : 'requestToken', failWithError: true }),
-  function(req, res) {
-    console.log('REDIRECT TO VERIFY...');
-    
-    res.redirect('/login/email/check')
-  }, function(err, req, res, next) {
-    console.log('ERROR');
-    console.log(err);
-  });
+router.post('/login/email', passport.authenticate('magiclink', {
+  action: 'requestToken',
+  failureRedirect: '/login',
+  failureMessage: true
+}), function(req, res, next) {
+  res.redirect('/login/email/check');
+});
 
 router.get('/login/email/check', function(req, res, next) {
   res.render('check');
 });
 
 router.get('/login/email/verify', passport.authenticate('magiclink', {
-  action : 'acceptToken',
   successReturnToOrRedirect: '/',
   failureRedirect: '/login',
   failureMessage: true
