@@ -1,22 +1,33 @@
 {
-  "name": "express-4.x-magic-link-example",
+  "name": "todos-express-email",
   "version": "0.0.0",
-  "description": "Express 4.x app using Passport for sign in with email.",
+  "private": true,
+  "description": "Todo app using SendGrid, Express, Passport, and SQLite for sign in with email.",
   "keywords": [
     "example",
+    "sendgrid",
     "express",
-    "passport"
+    "passport",
+    "sqlite"
   ],
-  "author": "Jared Hanson",
-  "license": "Unlicense",
-  "homepage": "https://github.com/passport/express-4.x-magic-link-example",
+  "author": {
+    "name": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "https://www.jaredhanson.me/"
+  },
+  "homepage": "https://github.com/passport/todos-express-email",
   "repository": {
     "type": "git",
-    "url": "git://github.com/passport/express-4.x-magic-link-example.git"
+    "url": "git://github.com/passport/todos-express-email.git"
   },
   "bugs": {
-    "url": "https://github.com/passport/express-4.x-magic-link-example/issues"
+    "url": "https://github.com/passport/todos-express-email/issues"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/jaredhanson"
+  },
+  "license": "Unlicense",
   "scripts": {
     "start": "node ./bin/www"
   },
