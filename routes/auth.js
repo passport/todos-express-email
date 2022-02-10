@@ -12,7 +12,7 @@ passport.use(new MagicLinkStrategy({
   userFields: [ 'email' ],
   tokenField: 'token',
   verifyUserAfterToken: true
-}, function(user, token) {
+}, function send(user, token) {
   var link = 'http://localhost:3000/login/email/verify?token=' + token;
   var msg = {
     to: user.email,
@@ -22,7 +22,7 @@ passport.use(new MagicLinkStrategy({
     html: '<h3>Hello!</h3><p>Click the link below to finish signing in to Todos.</p><p><a href="' + link + '">Sign in</a></p>',
   };
   return sendgrid.send(msg);
-}, function(user) {
+}, function verify(user) {
   return new Promise(function(resolve, reject) {
     db.get('SELECT rowid AS id, * FROM users WHERE email = ?', [
       user.email
