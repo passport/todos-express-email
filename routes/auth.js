@@ -76,7 +76,7 @@ router.post('/login/email', passport.authenticate('magiclink', {
 });
 
 router.get('/login/email/check', function(req, res, next) {
-  res.render('check');
+  res.render('login/email/check');
 });
 
 router.get('/login/email/verify', passport.authenticate('magiclink', {
