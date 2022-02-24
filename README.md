@@ -31,6 +31,11 @@ $ npm start
 
 Navigate to [`http://localhost:3000`](http://localhost:3000).
 
+## Tutorial
+
+Follow along with the step-by-step [Email Magic Link Tutorial](https://www.passportjs.org/tutorials/email/)
+to learn how this app was built.
+
 ## Overview
 
 This example illustrates how to use Passport and the [`passport-magic-link`](https://www.passportjs.org/packages/passport-magic-link/)
